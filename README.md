@@ -472,4 +472,4 @@ while True:
         if contador%2==0:
            vez=pecaBranca
         else:
-            vez=pecaPreta aq
+            vez=pecaPreta
