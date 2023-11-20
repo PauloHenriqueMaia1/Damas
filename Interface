@@ -1,95 +1,141 @@
-import pygame
-import sys
+from tkinter import *
+#declarar as variáveis
+pecaPreta = 'x'
+pecaBranca = 'o'
 
-# Inicialização do Pygame
-pygame.init()
 
-# Definição de constantes
-WIDTH, HEIGHT = 400, 400
-ROWS, COLS = 8, 8
-SQUARE_SIZE = WIDTH // COLS
+#bulero
+tabuleiro={ "8a":'-',"8b":pecaPreta,"8c":'-',"8d":pecaPreta,"8e":'-',"8f":pecaPreta,"8g":'-',"8h":pecaPreta,
+            "7a":pecaPreta,"7b":'-',"7c":pecaPreta,"7d":'-',"7e":pecaPreta,"7f":'-',"7g":pecaPreta,"7h":'-',
+            "6a":'-',"6b":pecaPreta,"6c":'-',"6d":pecaPreta,"6e":'-',"6f":pecaPreta,"6g":'-',"6h":pecaPreta,
+            "5a":'-',"5b":'-',"5c":'-',"5d":'-',"5e":'-',"5f":'-',"5g":'-',"5h":'-',
+            "4a":'-',"4b":'-',"4c":'-',"4d":'-',"4e":'-',"4f":'-',"4g":'-',"4h":'-',
+            "3a":pecaBranca,"3b":'-',"3c":pecaBranca,"3d":'-',"3e":pecaBranca,"3f":'-',"3g":pecaBranca,"3h":'-',
+            "2a":'-',"2b":pecaBranca,"2c":'-',"2d":pecaBranca,"2e":'-',"2f":pecaBranca,"2g":'-',"2h":pecaBranca,
+            "1a":pecaBranca,"1b":'-',"1c":pecaBranca,"1d":'-',"1e":pecaBranca,"1f":'-',"1g":pecaBranca,"1h":'-'}
 
-# Cores
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
 
-# Dicionário customizado
-custom_board = {
-    "8a": '-', "8b": 'P', "8c": '-', "8d": 'P', "8e": '-', "8f": 'P', "8g": '-', "8h": 'P',
-    "7a": 'P', "7b": '-', "7c": 'P', "7d": '-', "7e": 'P', "7f": '-', "7g": 'P', "7h": '-',
-    "6a": '-', "6b": 'P', "6c": '-', "6d": 'P', "6e": '-', "6f": 'P', "6g": '-', "6h": 'P',
-    "5a": '-', "5b": '-', "5c": '-', "5d": '-', "5e": '-', "5f": '-', "5g": '-', "5h": '-',
-    "4a": '-', "4b": '-', "4c": '-', "4d": '-', "4e": '-', "4f": '-', "4g": '-', "4h": '-',
-    "3a": 'B', "3b": '-', "3c": 'B', "3d": '-', "3e": 'B', "3f": '-', "3g": 'B', "3h": '-',
-    "2a": '-', "2b": 'B', "2c": '-', "2d": 'B', "2e": '-', "2f": 'B', "2g": '-', "2h": 'B',
-    "1a": 'B', "1b": '-', "1c": 'B', "1d": '-', "1e": 'B', "1f": '-', "1g": 'B', "1h": '-'
-}
 
-# Variáveis para controle de movimento
-selected_piece = None
-target_square = None
-move_in_progress = False
+    
+#criar a janela e botar um título nela
+telinha = Tk()
+telinha.title("jogo de dama")
 
-# Função para desenhar o tabuleiro
-def draw_board(screen):
-    for row in range(ROWS):
-        for col in range(COLS):
-            color = WHITE if (row + col) % 2 == 0 else BLACK
-            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-            square_key = f"{row + 1}{chr(ord('a') + col)}"
-            piece = custom_board[square_key]
+#configurar o tamanho da janela
+canvas = Canvas(telinha, width=600, height=600, bg="white")
+canvas.pack()
 
-            if piece == 'P':
-                pygame.draw.circle(screen, RED, (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), SQUARE_SIZE // 2 - 5)
-            elif piece == 'B':
-                pygame.draw.circle(screen, RED, (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), SQUARE_SIZE // 2 - 5)
-                pygame.draw.circle(screen, BLACK, (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), SQUARE_SIZE // 2 - 10)
+#mudar a cor do fundo
+#telinha.config(bg='gray')
 
-# Função principal do jogo
-def main():
-    global selected_piece, target_square, move_in_progress
+#alterar o icone da janela
+#telinha.iconphoto(False,PhotoImage())
 
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Jogo de Damas")
+#não deixar mexer no tamanho da janela
+telinha.resizable(width=False, height=False)
 
-    clock = pygame.time.Clock()
+#bolas
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                # Verifica se o clique foi dentro do tabuleiro
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                col = mouse_x // SQUARE_SIZE
-                row = mouse_y // SQUARE_SIZE
+#quadrado
+tamanhoDoQuadrado = 75
 
-                square_key = f"{row + 1}{chr(ord('a') + col)}"
-                piece = custom_board[square_key]
+#pika
+pecasele = None
 
-                if piece != '-' and not move_in_progress:
-                    selected_piece = square_key
-                    move_in_progress = True
-                elif move_in_progress and square_key != selected_piece:
-                    target_square = square_key
 
-        if move_in_progress and selected_piece and target_square:
-            custom_board[target_square] = custom_board[selected_piece]
-            custom_board[selected_piece] = '-'
 
-            selected_piece = None
-            target_square = None
-            move_in_progress = False
+#defzinha
+def criarInterfaceDoBulero():
+    #dois for pro tabuleiro 8x8
+    for linha in range(8):
+        for coluna in range(8):
+            #se o retangulo for par ele pinta de branco
+            if (linha+coluna) % 2 == 0:
+                cor = 'white'
+                # as coordenadas são x1,x2,y1,y2 dizendo a ponta esquerda e direita do retangulo
+                canvas.create_rectangle(coluna * tamanhoDoQuadrado, linha * tamanhoDoQuadrado, (coluna + 1) * tamanhoDoQuadrado, (linha + 1) * tamanhoDoQuadrado, fill=cor)
+            #se não pinta de preto  
+            else:
+                cor = 'black'
+                canvas.create_rectangle(coluna * tamanhoDoQuadrado, linha * tamanhoDoQuadrado, (coluna + 1) * tamanhoDoQuadrado, (linha + 1) * tamanhoDoQuadrado, fill=cor)
+            
+            #a posicao da peça do tabuleiro, seguindo o for
+            posicao = str(8 - linha) + chr(ord('a') + coluna)
+            #a peça de fato
+            peca = tabuleiro[posicao]
+            #vendo se a peça ta no tabuleiro
+            if peca:
+                #selecionando a cor da peça
+                if peca == 'o':
+                    corPeca = 'white'
+                elif peca == 'x':
+                    corPeca = '#14141f'
+                else:
+                    corPeca = ''
+                if corPeca != '':
+                    #definindo as dimensões da peça
+                    x1 = coluna * tamanhoDoQuadrado + 5
+                    y1 = linha * tamanhoDoQuadrado + 5
+                    x2 = (coluna + 1) * tamanhoDoQuadrado - 5
+                    y2 = (linha + 1) * tamanhoDoQuadrado - 5
+                    
+                    #fazendo a peça e pintando
+                    canvas.create_oval(x1, y1, x2, y2, fill=corPeca)
 
-        screen.fill(BLACK)
-        draw_board(screen)
-        pygame.display.flip()
 
-        clock.tick(60)
+# funções pra mover a peça
 
-if __name__ == "__main__":
-    main()
+#de onde ela tá
+def ondeEstou(event):
+    # a peça q a gente quer e a posição dela
+    global pecasele, posicao
+    
+    #achando a posição q ta a peça pela linha e coluna, de acordo com o clique q foi passado pro event
+    coluna = event.x // tamanhoDoQuadrado
+    linha = event.y // tamanhoDoQuadrado
+    
+    #declarando a coordenada pro tabuleiro
+    posicao= str(8 - linha) + chr(ord('a') + coluna)
+    
+    #achando a peça no tabuleiro
+    if tabuleiro[posicao]:
+        pecasele = tabuleiro[posicao]
+
+#pra onde ela vai
+def prondeVou(event):
+    #posicao da peça
+    global posicao
+    
+    #coordenadas da peça
+    coluna = event.x // tamanhoDoQuadrado
+    linha = event.y // tamanhoDoQuadrado
+    
+    #declarando a coordenada pro tabuleiro
+    posicaoqvou = str(8 - linha) + chr(ord('a') + coluna)
+    
+    
+    #barrando movimentos de colocar peça em cima da outra e colocar peça em casa branca
+    if tabuleiro[posicaoqvou] not in ['o','x'] and (linha+coluna) % 2 != 0:
+        mover(posicao,posicaoqvou)
+    
+#mover peca
+#posicao = onde eu tô
+#posicaoqvou = onde irei
+def mover(posicao,posicaoqvou):
+    
+    tabuleiro[posicaoqvou]=tabuleiro[posicao]
+    tabuleiro[posicao]='-'
+    criarInterfaceDoBulero()
+
+#os botões para dizer de onde parte e pra onde vai
+canvas.bind("<Button-1>", ondeEstou)
+canvas.bind("<Button-3>", prondeVou)
+
+#criar o tabuleiro
+criarInterfaceDoBulero()
+
+
+#botar no final do código
+telinha.mainloop()
