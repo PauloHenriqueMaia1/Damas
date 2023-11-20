@@ -2,121 +2,31 @@
 import time
 pecaPreta = 'x'
 pecaBranca = 'o'
+damaPreta = 'X'
+damaBranca = 'O'
 contador=0
 vez=pecaBranca
 movi=''
 lugar=''
 opcao=''
 k=0
+p=0
 pecaPretaCapturada=[]
 pecaBrancaCapturada=[]
 at=-1
 
-#Introdução
-print("Bem vindo ao jogo de damas v1.0")
-input("Digite qualquer botão para continuar ")
-#Opções do que fazer:
-while opcao!="1":
-    print("Selecione o que fazer:")
-    print("1 - Player vs Player")
-    print("2 - Player vs Computador (em breve!!)")
-    print("3 - Créditos")
-    print("4 - Manual")
-    opcao=input("Digite apenas um número ")
-   
-    #Manual do jogo
-    if opcao=="4":
-        print("COMO JOGAR?...")
-        time.sleep(2)
-        print("")
-        print("O jogo de damas é um jogo de dois jogadores que controlam peças em lados opostos ao tabuleiro.")
-        time.sleep(2)
-        print("")
-        print("A primeira jogada deve ser realizada pelo jogador com peças brancas (o).")
-        time.sleep(2)
-        print("")
-        print("Cada jogada consiste em mover a peça para a sua respectiva diagonal.")
-        time.sleep(2)
-        print("")
-        print("Porém, a peça só pode ser movida se cumpre as seguintes restrições:")
-        time.sleep(2)
-        print("")
-        print("A peça escolhida deve ser a peça da vez de jogar (ex: não é possível mover peças brancas quando for a vez do preto)")
-        time.sleep(2)
-        print("")
-        print("As peças só podem ir para a diagonal caso ela não esteja ocupada e exista no tabuleiro.")
-        time.sleep(2)
-        print("")
-        print("Sempre é necessário mover unicamente uma peça na vez do jogador.")
-        time.sleep(2)
-        print("")
-        print("Não é possível voltar peças para suas diagonais.")
-        time.sleep(2)
-        print("")
-        print("Só é possível adiantar uma posição por vez de jogada.")
-        time.sleep(4)
-        print("COMANDOS PARA MOVER PEÇAS...")
-        time.sleep(2)
-        print("")
-        print("Esse programa consiste em mover peças por meio de comandos dados pelos jogadores")
-        time.sleep(2)
-        print("")
-        print("O primeiro comando será referente a posição da peça que será movida. Se a peça escolhida cumprir todas as restrições estabelecidas, então")
-        time.sleep(2)
-        print("")
-        print("O segundo comando irá aparecer. Ele é referente para onde a peça deve ir, se todas as restrições forem cumpridas, então o tabuleiro será impresso com a peça mexida.")
-        time.sleep(2)
-        print("")
-        print("A sintaxe dos comandos é de número/letra. O tabuleiro possui uma numeração com letras que estabelecem a posição de cada quadrado.")
-        time.sleep(2)
-        print("")
-        print("Ex mover uma peça da posição 3 e na posição b: 3/b.")
-        time.sleep(2)
-        print("")
-        print("Caso a sintaxe esteja incorreta, ou alguma restrição não for cumprida então o jogador terá que repetir o comando até que seja aceito.")
-        print('')
-    elif opcao=="3":
-        print("Desenvolvedores:")
-        print('')
-        print("Paulo Henrique da Silva Maia")
-        print('')
-        print("Thúlio Gomes Pereira")
-        print('')
-        print("Yasmim da Silva Figuerêido")
-        print('')
-        time.sleep(1)
-        print("Orientador:")
-        print('')
-        print("Henrique Do Nascimento Cunha")
-        print('')
-    elif opcao=="2":
-        time.sleep(1)
-        print('')
-        print("EM BREVE!!")
-        print('')
-    elif opcao!="1":
-        time.sleep(1)
-        print("Número não identificado.")
-        print("Tente novamente!")
-        time.sleep(1)
-        print("")
 
-
-#time.sleep(2)
-print("")
-print("")
 
 #O tabuleiro.
-tabuleiro={ "8a":'-',"8b":pecaPreta,"8c":'-',"8d":pecaPreta,"8e":'-',"8f":pecaPreta,"8g":'-',"8h":pecaPreta,
-            "7a":pecaPreta,"7b":'-',"7c":pecaPreta,"7d":'-',"7e":pecaPreta,"7f":'-',"7g":pecaPreta,"7h":'-',
+tabuleiro={"8a":'-',"8b":pecaPreta,"8c":'-',"8d":pecaPreta,"8e":'-',"8f":pecaPreta,"8g":'-',"8h":pecaPreta,
+            "7a":pecaPreta,"7b":'-',"7c":pecaPreta,"7d":'-',"7e":damaBranca,"7f":'-',"7g":pecaPreta,"7h":'-',
             "6a":'-',"6b":pecaPreta,"6c":'-',"6d":pecaPreta,"6e":'-',"6f":pecaPreta,"6g":'-',"6h":pecaPreta,
             "5a":'-',"5b":'-',"5c":'-',"5d":'-',"5e":'-',"5f":'-',"5g":'-',"5h":'-',
-            "4a":'-',"4b":'-',"4c":'-',"4d":'-',"4e":'-',"4f":'-',"4g":'-',"4h":'-',
-            "3a":pecaBranca,"3b":'-',"3c":pecaBranca,"3d":'-',"3e":pecaBranca,"3f":'-',"3g":pecaBranca,"3h":'-',
+            "4a":'-',"4b":pecaPreta,"4c":'-',"4d":'-',"4e":'-',"4f":'-',"4g":'-',"4h":'-',
+            "3a":'-',"3b":'-',"3c":pecaBranca,"3d":'-',"3e":pecaBranca,"3f":'-',"3g":pecaBranca,"3h":'-',
             "2a":'-',"2b":pecaBranca,"2c":'-',"2d":pecaBranca,"2e":'-',"2f":pecaBranca,"2g":'-',"2h":pecaBranca,
             "1a":pecaBranca,"1b":'-',"1c":pecaBranca,"1d":'-',"1e":pecaBranca,"1f":'-',"1g":pecaBranca,"1h":'-'}
-
-#Função de montar o tabuleiro no print.
+#Função de montar o  no print.
 def montarBulero():
     listinha = {0:"a",1:"b",2:"c",3:"d",4:"e",5:"f",6:"g",7:"h"}
     for i in range(8):
@@ -146,7 +56,7 @@ def restricaoFormato(movimento,movi,lugar):
    
 #Restrição caso não haja peça no lugar selecionado.      
 def restricaoMoviPeca(movi):
-    if tabuleiro[movi]=='-':
+    if p==0 and tabuleiro[movi]=='-':
         print("Essa jogada não pode ser realizada pois não há nenhuma peça na posicão informada")
         print("Tente novamente!")
         print("")
@@ -166,14 +76,56 @@ def restricaoMoviIne(movi):
    
 #Restrição caso não seja a vez dessa peça jogar.
 def restricaoMoviVez(movi):      
-    if tabuleiro[movi]!=vez:
+    if p==0 and tabuleiro[movi]!=vez:
         print("Essa jogada não pode ser realizada pois a peça escolhida é a oposta a sua cor.")
         print("Tente novamente!")
         print("")
         return False
     else:
         return True
+    
+
 #Funções da dama
+
+#captura da dama
+def capturaDama(movi,lugar):
+    letras = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
+    global cap
+    cap=0
+    
+    # nesse if ele vê se vai pra frente ou pra trás
+    if int(lugar[0]) > int(movi[0]):
+        l = -1
+    else:
+        l = 1
+    # e nesse ele vê se é pra esquerda ou pra direita  
+    if letras[lugar[1]] > letras[movi[1]]:
+        m = -1
+    else:
+        m = 1
+
+    capturada = str(int(lugar[0]) + l*1)+str(chr(ord(lugar[1])+ m*1))
+    if tabuleiro[capturada] and tabuleiro[movi]==damaPreta:
+        pecaBrancaCapturada.append("o")
+        tabuleiro[capturada]='-'
+        print()
+        print(f'A peça Branca da posição {capturada} foi capturada.')
+        print(*pecaBrancaCapturada)
+        print()
+        cap+=1
+        return True
+    elif tabuleiro[capturada] and tabuleiro[movi]==damaBranca:
+        pecaPretaCapturada.append("x")
+        tabuleiro[capturada]='-'
+        print()
+        print(f'A peça Preta da posição {capturada} foi capturada.')
+        print(*pecaPretaCapturada)
+        print()
+        cap+=1
+        return True
+    return False
+
+#restrição de movimento para a dama    
 def essadamapodevoarn(lugar,movi):
     letras = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
     # nesse if ele vê se vai pra frente ou pra trás
@@ -181,20 +133,20 @@ def essadamapodevoarn(lugar,movi):
         l = 1
     else:
         l = -1
-    # e nesse ele vê se é pra esquerda ou pra direita   
+    # e nesse ele vê se é pra esquerda ou pra direita  
     if letras[lugar[1]] > letras[movi[1]]:
         m = 1
     else:
         m = -1
     # vai passar cada lugar do tabuleiro no sentido que foi detectado e para se encontrar uma peça no caminho
-    for i in range(int(movi[0]),int(lugar[0])):
-        if tabuleiro[str(int(movi[0]) + m)+str(chr(ord(movi[1]) + l))] != '-':
+    for i in range(abs(int(lugar[0])-int(movi[0]))):
+        if  tabuleiro[str(int(movi[0]) + i*l)+str(chr(ord(movi[1]) + i*m))] != '-' and capturaDama(movi,lugar)==False :
             print("e meu fi quer voar é?")
             print("Tente novamente!")
             print("")
             return False
-    return True 
-        
+    return True
+       
 #Função de como se mover com a dama
 def dancinhadadama(movi,lugar):
     letras = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
@@ -206,22 +158,22 @@ def dancinhadadama(movi,lugar):
     else:
         return True
 
-#FUNÇÃO VIRAR DAMA
+#função para virar dama
 def dama(lugar2,tabuleiro2,movi2):
     if lugar2[0]=='8' and tabuleiro2[movi2] == 'o':
-        tabuleiro2[lugar2] = 'O'
+        tabuleiro2[lugar2] = damaBranca
     if lugar2[0]=='1' and tabuleiro2[movi2] == 'x':
-        tabuleiro2[lugar2] = 'X'
+        tabuleiro2[lugar2] = damaPreta
     return tabuleiro2
 
 #Restrição para jogar com a dama na vez da cor certa
 def restricaoMoviDamaCor(movi):      
-    if vez=='x' and tabuleiro[movi]=='O':
+    if vez=='x' and tabuleiro[movi]==damaBranca:
         print("Essa jogada não pode ser realizada pois a peça escolhida é a oposta a sua cor.")
         print("Tente novamente!")
         print("")
         return False
-    elif vez=='o' and tabuleiro[movi]=='X':
+    elif vez=='o' and tabuleiro[movi]==damaPreta:
         print("Essa jogada não pode ser realizada pois a peça escolhida é a oposta a sua cor.")
         print("Tente novamente!")
         print("")
@@ -289,25 +241,29 @@ def restricaoLugarVez(lugar):
    
 #Função Captura de peças.  
 def captura(movi,lugar):
+    global cap
+    cap=0
     numeros = {"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8}
     letras = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
     alfanum = {"1":"a","2":"b","3":"c","4":"d","5":"e","6":"f","7":"g","8":"h"}
     capturada = str(int(numeros[movi[0]]+numeros[lugar[0]])//2) + alfanum[str(int(letras[movi[1]]+letras[lugar[1]])//2)]
-    if tabuleiro[lugar] == '-' and tabuleiro[capturada]=='x' and vez==pecaBranca:
+    if tabuleiro[lugar] == '-' and tabuleiro[capturada] in'xX' and vez==pecaBranca:
         pecaPretaCapturada.append("x")
         tabuleiro[capturada]='-'
         print()
         print(f'A peça Preta da posição {capturada} foi capturada.')
         print(*pecaPretaCapturada)
         print()
+        cap+=1
         return True
-    elif tabuleiro[lugar]== '-' and tabuleiro[capturada]=='o' and vez==pecaPreta:
+    elif tabuleiro[lugar]== '-' and tabuleiro[capturada] in 'oO' and vez==pecaPreta:
         pecaBrancaCapturada.append("o")
         tabuleiro[capturada]='-'
         print()
         print(f'A peça Branca da posição {capturada} foi capturada.')
         print(*pecaBrancaCapturada)
         print()
+        cap+=1
         return True
     return False
    
@@ -318,21 +274,21 @@ def mover(pecaMovida,pecaLugar):
     tabuleiro[pecaLugar]=tabuleiro[pecaMovida]
     dama(lugar,tabuleiro,movi)
     tabuleiro[pecaMovida]='-'
-    
+   
 def capturaPossivel(movi,lugar):
     numeros = {"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8}
     letras = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
     alfanum = {"1":"a","2":"b","3":"c","4":"d","5":"e","6":"f","7":"g","8":"h"}
     capturada = str(int(numeros[movi[0]]+numeros[lugar[0]])//2) + alfanum[str(int(letras[movi[1]]+letras[lugar[1]])//2)]
-    if tabuleiro[lugar] == '-' and tabuleiro[capturada]=='x' and vez==pecaBranca:
+    if tabuleiro[lugar] == '-' and tabuleiro[capturada] in 'xX' and vez==pecaBranca:
         return True
-    elif tabuleiro[lugar]== '-' and tabuleiro[capturada]=='o' and vez==pecaPreta:
+    elif tabuleiro[lugar]== '-' and tabuleiro[capturada] in 'oO' and vez==pecaPreta:
         return True
     return False
-    
-    
-    
-    
+   
+   
+   
+   
 def capturaObrigatoria(tabuleiro, vez):
     for peca in tabuleiro:
         if tabuleiro[peca] == vez:
@@ -351,10 +307,77 @@ def capturaObrigatoria(tabuleiro, vez):
                             return True
     return False
 
-    
-    
 
 
+def capturaObrigatoriaSeguida(vez,lugar,tabuleiro):
+    
+    
+    #verificar se há peças na ESQUERDA que podem ser capturadas (BRANCOS)
+    if vez=='o' and lugar[0] not in '78' and lugar[1] not in 'ab' and tabuleiro[str(int(lugar[0])+1) + str(chr(ord(lugar[1])-1))] =='x' and  tabuleiro[str(int(lugar[0])+2) + str(chr(ord(lugar[1])-2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    #verificar se há peças na DIREITA que podem ser capturadas (BRANCOS)
+    if vez=='o' and lugar[0] not in '78' and lugar[1] not in 'gh' and  tabuleiro[str(int(lugar[0])+1) + str(chr(ord(lugar[1])+1))] =='x' and  tabuleiro[str(int(lugar[0])+2) + str(chr(ord(lugar[1])+2))] == '-':
+        print("Captura Obrigatória")
+        return True
+
+    #verificar se há peças na DIREITA que podem ser capturadas (PRETOS)
+    if vez=='x' and lugar[0] not in '12' and lugar[1] not in 'gh' and tabuleiro[str(int(lugar[0])-1) + str(chr(ord(lugar[1])+1))] =='o' and  tabuleiro[str(int(lugar[0])-2) + str(chr(ord(lugar[1])+2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    #verificar se há peças na ESQUERDA que podem ser capturadas (PRETOS)
+    if vez=='x' and lugar[0] not in '12' and lugar[1] not in 'ab' and tabuleiro[str(int(lugar[0])-1) + str(chr(ord(lugar[1])-1))] =='o' and  tabuleiro[str(int(lugar[0])-2) + str(chr(ord(lugar[1])-2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    return False
+    
+    
+def capturaObrigatoriaSeguidaDama(lugar,tabuleiro):
+    
+    #BRANCO
+    
+    #verificar se há peças na ESQUERDA que podem ser capturadas CIMA DAMA
+    if tabuleiro[lugar] =='O' and lugar[0] not in '78' and lugar[1] not in 'ab' and tabuleiro[str(int(lugar[0])+1) + str(chr(ord(lugar[1])-1))] =='x' and  tabuleiro[str(int(lugar[0])+2) + str(chr(ord(lugar[1])-2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    #verificar se há peças na DIREITA que podem ser capturadas CIMA DAMA
+    if tabuleiro[lugar] == 'O' and lugar[0] not in '78' and lugar[1] not in 'gh' and  tabuleiro[str(int(lugar[0])+1) + str(chr(ord(lugar[1])+1))] =='x' and  tabuleiro[str(int(lugar[0])+2) + str(chr(ord(lugar[1])+2))] == '-':
+        print("Captura Obrigatória")
+        return True
+
+    #verificar se há peças na DIREITA que podem ser capturadas BAIXO DAMA
+    if tabuleiro[lugar] == 'O' and lugar[0] not in '12' and lugar[1] not in 'gh' and tabuleiro[str(int(lugar[0])-1) + str(chr(ord(lugar[1])+1))] =='x' and  tabuleiro[str(int(lugar[0])-2) + str(chr(ord(lugar[1])+2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    #verificar se há peças na ESQUERDA que podem ser capturadas BAIXO DAMA
+    if tabuleiro[lugar] == 'O' and lugar[0] not in '12' and lugar[1] not in 'ab' and tabuleiro[str(int(lugar[0])-1) + str(chr(ord(lugar[1])-1))] =='x' and  tabuleiro[str(int(lugar[0])-2) + str(chr(ord(lugar[1])-2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    
+    
+    #PRETO
+    
+    #verificar se há peças na ESQUERDA que podem ser capturadas CIMA DAMA
+    if tabuleiro[lugar] =='X' and lugar[0] not in '78' and lugar[1] not in 'ab' and tabuleiro[str(int(lugar[0])+1) + str(chr(ord(lugar[1])-1))] =='o' and  tabuleiro[str(int(lugar[0])+2) + str(chr(ord(lugar[1])-2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    #verificar se há peças na DIREITA que podem ser capturadas CIMA DAMA
+    if tabuleiro[lugar] == 'X' and lugar[0] not in '78' and lugar[1] not in 'gh' and  tabuleiro[str(int(lugar[0])+1) + str(chr(ord(lugar[1])+1))] =='o' and  tabuleiro[str(int(lugar[0])+2) + str(chr(ord(lugar[1])+2))] == '-':
+        print("Captura Obrigatória")
+        return True
+
+    #verificar se há peças na DIREITA que podem ser capturadas BAIXO DAMA
+    if tabuleiro[lugar] == 'X' and lugar[0] not in '12' and lugar[1] not in 'gh' and tabuleiro[str(int(lugar[0])-1) + str(chr(ord(lugar[1])+1))] =='o' and  tabuleiro[str(int(lugar[0])-2) + str(chr(ord(lugar[1])+2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    #verificar se há peças na ESQUERDA que podem ser capturadas BAIXO DAMA
+    if tabuleiro[lugar] == 'X' and lugar[0] not in '12' and lugar[1] not in 'ab' and tabuleiro[str(int(lugar[0])-1) + str(chr(ord(lugar[1])-1))] =='o' and  tabuleiro[str(int(lugar[0])-2) + str(chr(ord(lugar[1])-2))] == '-':
+        print("Captura Obrigatória")
+        return True
+    
+
+    return False
+    
 
 
 
@@ -365,76 +388,88 @@ while True:
         print("VEZ DAS PEÇAS BRANCAS (o)")
     elif vez=='x':
         print("VEZ DAS PEÇAS PRETAS (x)")
-    
-    
+   
+   
+   
    
    
     #Entrada
-    movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")  
-    movi=movimento[0]+movimento[1].lower()
-    lugar=movimento[2]+movimento[3].lower()
-        
-    while restricaoFormato(movimento,movi,lugar)==False:
-        
-            movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
-            movi=movimento[0]+movimento[1].lower()
-            lugar=movimento[2]+movimento[3].lower()
-    
-    while restricaoFormato(movimento,movi,lugar)==False or capturaObrigatoria(tabuleiro, vez) and capturaPossivel(movi,lugar)==False:
-        
-        
-        movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
+    if p==0:
+        movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")  
         movi=movimento[0]+movimento[1].lower()
         lugar=movimento[2]+movimento[3].lower()
         
-    
-    
-   
+           
+        while restricaoFormato(movimento,movi,lugar)==False:
+           
+                movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
+                movi=movimento[0]+movimento[1].lower()
+                lugar=movimento[2]+movimento[3].lower()
+        if tabuleiro[movi] not in [damaPreta, damaBranca]:
+            while capturaObrigatoria(tabuleiro, vez) and capturaPossivel(movi,lugar)==False:
+                    movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
+                    movi=movimento[0]+movimento[1].lower()
+                    lugar=movimento[2]+movimento[3].lower()
+        
+        
+                
     #Verificação das restrições e caso alguma não seja cumprida, será necessário digitar novamente.
     while True:
         k=0
-        if tabuleiro[movi]!=vez or tabuleiro[movi] not in ['O','X'] and restricaoLugarImpo(movi,lugar) == False:
+        if tabuleiro[movi]!=vez or tabuleiro[movi] not in [damaBranca, damaPreta] and restricaoLugarImpo(movi,lugar) == False:
              k = 1
-        if tabuleiro[movi] not in ['O','X']:
+        if tabuleiro[movi] not in [damaBranca,damaPreta]:
             if restricaoMoviPeca(movi)==False or restricaoMoviIne(movi) == False or restricaoMoviVez(movi) == False or restricaoLugarOcupado(lugar)==False or restricaoLugarPosicao(lugar) == False or restricaoLugarFrente(lugar) == False or k>0:
-                
+               
 
-                movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ") 
+                movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
                 movi=movimento[0]+movimento[1].lower()
-                lugar=movimento[2]+movimento[3].lower()   
+                lugar=movimento[2]+movimento[3].lower()  
                 while restricaoFormato(movimento,movi,lugar)==False:  
                     movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")  
                 movi=movimento[0]+movimento[1].lower()
                 lugar=movimento[2]+movimento[3].lower()                
-            
-            
+           
+           
             else:
                 break
         else:
-            if restricaoMoviPeca(movi)==False or essadamapodevoarn(lugar,movi)== False or dancinhadadama(movi,lugar) == False or restricaoMoviIne(movi) == False  or restricaoLugarOcupado(lugar)==False or restricaoMoviDamaCor(movi)==False or k>0:
+            if restricaoMoviPeca(movi)==False or essadamapodevoarn(lugar,movi)== False or dancinhadadama(movi,lugar) == False or restricaoMoviIne(movi) == False  or restricaoLugarOcupado(lugar)==False or restricaoMoviDamaCor(movi)==False:
                 movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
                 movi=movimento[0]+movimento[1].lower()
-                lugar=movimento[2]+movimento[3].lower()   
+                lugar=movimento[2]+movimento[3].lower()  
                 while restricaoFormato(movimento,movi,lugar)==False:
                     movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
-                
+               
                 movi=movimento[0]+movimento[1].lower()
-                lugar=movimento[2]+movimento[3].lower()   
-                
-                
+                lugar=movimento[2]+movimento[3].lower()  
+                 
             else:
                 break
-    
+   
 
     #Se a jogada for possível, então será modificada no tabuleiro e ele será exibido.
    
     mover(movi,lugar)
     montarBulero()
    
-    #Verificação de quem é a vez de jogar.
-    if capturaObrigatoria(tabuleiro, vez)==False and capturaPossivel(movi,lugar)==False:
+    #Verificação de quem é a vez de jogar e se há a possibilidade de captura dupla .
+    if cap==0:
         contador+=1
         if contador%2==0:
            vez=pecaBranca
         else:
             vez=pecaPreta
+    elif cap>0 and capturaObrigatoriaSeguida(vez,lugar,tabuleiro)==True or capturaObrigatoriaSeguidaDama(lugar,tabuleiro)==True:
+        print("Você ainda pode capturar mais uma peça.")
+        
+        
+
+    
+        print()
+    else:
+        contador+=1
+        if contador%2==0:
+           vez=pecaBranca
+        else:
+            vez=pecaPreta aq
