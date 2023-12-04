@@ -25,13 +25,9 @@ def codigozao(movi,lugar):
             print("VEZ DAS PEÇAS PRETAS (x)")
        
        
-       
         if tabuleiro[movi] not in [damaPreta, damaBranca]:
             while capturaObrigatoria(tabuleiro, vez) and capturaPossivel(movi,lugar)==False:
-                    '''movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
-                    movi=movimento[0]+movimento[1].lower()
-                    lugar=movimento[2]+movimento[3].lower()'''
-                    redigitar = True
+                    #redigitar = True
                     break
                         
             
@@ -50,19 +46,14 @@ def codigozao(movi,lugar):
                     break
             else:
                 if restricaoMoviPeca(movi,p)==False or essadamapodevoarn(lugar,movi)== False or dancinhadadama(movi,lugar) == False or restricaoMoviIne(movi) == False or restricaoLugarOcupado(lugar)==False or restricaoMoviDamaCor(movi)==False:
+                    redigitar = True
                     print()
                 else:
                     break
        
-
-        #Se a jogada for possível, então será modificada no tabuleiro e ele será exibido.
-        if redigitar == False:
-            mover(movi,lugar)
-        
-        
-       
         #Verificação de quem é a vez de jogar e se há a possibilidade de captura dupla .
         if redigitar == False:
+            mover(movi,lugar) #Se a jogada for possível, então será modificada no tabuleiro e ele será exibido.
             if cap==0:
                 contador+=1
                 if contador%2==0:
@@ -79,5 +70,6 @@ def codigozao(movi,lugar):
                 else:
                     vez=pecaPreta
         return tabuleiro, redigitar
+
 
 
