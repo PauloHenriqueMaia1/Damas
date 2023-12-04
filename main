@@ -1,22 +1,13 @@
+#imports
+
 from tkinter import *
-#declarar as variáveis
-pecaPreta = 'x'
-pecaBranca = 'o'
+from loop import *
+from codigo import *
+#declarações
 
+mensagem = None
+redigitar = False
 
-#bulero
-tabuleiro={ "8a":'-',"8b":pecaPreta,"8c":'-',"8d":pecaPreta,"8e":'-',"8f":pecaPreta,"8g":'-',"8h":pecaPreta,
-            "7a":pecaPreta,"7b":'-',"7c":pecaPreta,"7d":'-',"7e":pecaPreta,"7f":'-',"7g":pecaPreta,"7h":'-',
-            "6a":'-',"6b":pecaPreta,"6c":'-',"6d":pecaPreta,"6e":'-',"6f":pecaPreta,"6g":'-',"6h":pecaPreta,
-            "5a":'-',"5b":'-',"5c":'-',"5d":'-',"5e":'-',"5f":'-',"5g":'-',"5h":'-',
-            "4a":'-',"4b":'-',"4c":'-',"4d":'-',"4e":'-',"4f":'-',"4g":'-',"4h":'-',
-            "3a":pecaBranca,"3b":'-',"3c":pecaBranca,"3d":'-',"3e":pecaBranca,"3f":'-',"3g":pecaBranca,"3h":'-',
-            "2a":'-',"2b":pecaBranca,"2c":'-',"2d":pecaBranca,"2e":'-',"2f":pecaBranca,"2g":'-',"2h":pecaBranca,
-            "1a":pecaBranca,"1b":'-',"1c":pecaBranca,"1d":'-',"1e":pecaBranca,"1f":'-',"1g":pecaBranca,"1h":'-'}
-
-
-
-    
 #criar a janela e botar um título nela
 telinha = Tk()
 telinha.title("jogo de dama")
@@ -41,13 +32,21 @@ telinha.resizable(width=False, height=False)
 #quadrado
 tamanhoDoQuadrado = 75
 
-#pika
+#peça selecionada
 pecasele = None
 
+#def
 
+def redigite():
+    global mensagem
+    mensagem = Label(telinha, text="O SEU MOVIMENTO É INVÁLIDO!")
+    mensagem.pack()
+
+    #muda a tela pra botar a mensagem
+    telinha.update()
 
 #defzinha
-def criarInterfaceDoBulero():
+def criarInterfaceDoBulero(tabuleiro):
     #dois for pro tabuleiro 8x8
     for linha in range(8):
         for coluna in range(8):
@@ -56,86 +55,122 @@ def criarInterfaceDoBulero():
                 cor = 'white'
                 # as coordenadas são x1,x2,y1,y2 dizendo a ponta esquerda e direita do retangulo
                 canvas.create_rectangle(coluna * tamanhoDoQuadrado, linha * tamanhoDoQuadrado, (coluna + 1) * tamanhoDoQuadrado, (linha + 1) * tamanhoDoQuadrado, fill=cor)
-            #se não pinta de preto  
+            #se não pinta de preto
             else:
                 cor = 'black'
                 canvas.create_rectangle(coluna * tamanhoDoQuadrado, linha * tamanhoDoQuadrado, (coluna + 1) * tamanhoDoQuadrado, (linha + 1) * tamanhoDoQuadrado, fill=cor)
-            
+
             #a posicao da peça do tabuleiro, seguindo o for
             posicao = str(8 - linha) + chr(ord('a') + coluna)
             #a peça de fato
             peca = tabuleiro[posicao]
             #vendo se a peça ta no tabuleiro
-            if peca:
+
                 #selecionando a cor da peça
-                if peca == 'o':
-                    corPeca = 'white'
-                elif peca == 'x':
-                    corPeca = '#14141f'
-                else:
-                    corPeca = ''
-                if corPeca != '':
-                    #definindo as dimensões da peça
-                    x1 = coluna * tamanhoDoQuadrado + 5
-                    y1 = linha * tamanhoDoQuadrado + 5
-                    x2 = (coluna + 1) * tamanhoDoQuadrado - 5
-                    y2 = (linha + 1) * tamanhoDoQuadrado - 5
-                    
-                    #fazendo a peça e pintando
-                    canvas.create_oval(x1, y1, x2, y2, fill=corPeca)
+            if peca == 'o':
+                corPeca = 'white'
+                
+            elif peca == 'x':
+                corPeca = 'gray'
+                
+            if peca == 'O':
+                corPecaFora = "white"
+                corPecaDentro = "yellow"
+                
+            elif peca == 'X':
+                corPecaFora = "gray"
+                corPecaDentro = "yellow"
+                
+            if peca in ['x','o']:
+                #definindo as dimensões da peça
+                x1 = coluna * tamanhoDoQuadrado + 5
+                y1 = linha * tamanhoDoQuadrado + 5
+                x2 = (coluna + 1) * tamanhoDoQuadrado - 5
+                y2 = (linha + 1) * tamanhoDoQuadrado - 5
+
+                #fazendo a peça e pintando
+                canvas.create_oval(x1, y1, x2, y2, fill=corPeca)
+            elif peca in ['X','O']:
+                #definindo as dimensões da peça
+                x1 = coluna * tamanhoDoQuadrado + 5
+                y1 = linha * tamanhoDoQuadrado + 5
+                x2 = (coluna + 1) * tamanhoDoQuadrado - 5
+                y2 = (linha + 1) * tamanhoDoQuadrado - 5
+
+                #fazendo a peça e pintando
+                canvas.create_oval(x1, y1, x2, y2, fill=corPecaFora)
+                
+                x1a = coluna * tamanhoDoQuadrado + 15
+                y1a = linha * tamanhoDoQuadrado + 15
+                x2a = (coluna + 1) * tamanhoDoQuadrado - 15
+                y2a = (linha + 1) * tamanhoDoQuadrado - 15
+                
+                canvas.create_oval(x1a, y1a, x2a, y2a, fill=corPecaDentro)
 
 
 # funções pra mover a peça
 
 #de onde ela tá
 def ondeEstou(event):
+    global tabuleiro
     # a peça q a gente quer e a posição dela
     global pecasele, posicao
-    
+
     #achando a posição q ta a peça pela linha e coluna, de acordo com o clique q foi passado pro event
     coluna = event.x // tamanhoDoQuadrado
     linha = event.y // tamanhoDoQuadrado
-    
+
     #declarando a coordenada pro tabuleiro
     posicao= str(8 - linha) + chr(ord('a') + coluna)
-    
+
     #achando a peça no tabuleiro
     if tabuleiro[posicao]:
         pecasele = tabuleiro[posicao]
 
 #pra onde ela vai
 def prondeVou(event):
+    global mensagem
+    global tabuleiro
     #posicao da peça
     global posicao
-    
+
     #coordenadas da peça
     coluna = event.x // tamanhoDoQuadrado
     linha = event.y // tamanhoDoQuadrado
-    
+
     #declarando a coordenada pro tabuleiro
     posicaoqvou = str(8 - linha) + chr(ord('a') + coluna)
-    
-    
-    #barrando movimentos de colocar peça em cima da outra e colocar peça em casa branca
+
+
+    '''#barrando movimentos de colocar peça em cima da outra e colocar peça em casa branca
+    #if tabuleiro[posicaoqvou] not in ['o','x'] and (linha+coluna) % 2 != 0:'''
+
     if tabuleiro[posicaoqvou] not in ['o','x'] and (linha+coluna) % 2 != 0:
-        mover(posicao,posicaoqvou)
-    
+        tabuleiro, redigitar = codigozao(posicao,posicaoqvou)
+        if redigitar == True:
+            redigite()
+        elif mensagem != None:
+            mensagem.pack_forget()
+        criarInterfaceDoBulero(tabuleiro)
+        print(tabuleiro)
+
+
 #mover peca
 #posicao = onde eu tô
 #posicaoqvou = onde irei
-def mover(posicao,posicaoqvou):
-    
+'''def mover(posicao,posicaoqvou):
+
     tabuleiro[posicaoqvou]=tabuleiro[posicao]
     tabuleiro[posicao]='-'
-    criarInterfaceDoBulero()
+    criarInterfaceDoBulero()'''
 
 #os botões para dizer de onde parte e pra onde vai
 canvas.bind("<Button-1>", ondeEstou)
 canvas.bind("<Button-3>", prondeVou)
 
 #criar o tabuleiro
-criarInterfaceDoBulero()
+criarInterfaceDoBulero(tabuleiro)
 
-
+print(tabuleiro)
 #botar no final do código
 telinha.mainloop()
