@@ -148,7 +148,9 @@ def prondeVou(event):
     if tabuleiro[posicaoqvou] not in ['o','x'] and (linha+coluna) % 2 != 0:
         tabuleiro, redigitar = codigozao(posicao,posicaoqvou)
         if redigitar == True:
+            #aqui
             redigite()
+            clique()
         elif mensagem != None:
             mensagem.pack_forget()
         criarInterfaceDoBulero(tabuleiro)
@@ -158,19 +160,16 @@ def prondeVou(event):
 #mover peca
 #posicao = onde eu tô
 #posicaoqvou = onde irei
-'''def mover(posicao,posicaoqvou):
-
-    tabuleiro[posicaoqvou]=tabuleiro[posicao]
-    tabuleiro[posicao]='-'
-    criarInterfaceDoBulero()'''
 
 #os botões para dizer de onde parte e pra onde vai
-canvas.bind("<Button-1>", ondeEstou)
-canvas.bind("<Button-3>", prondeVou)
-
+def clique():
+    canvas.bind("<Button-1>", ondeEstou)
+    canvas.bind("<Button-3>", prondeVou)
+clique()
 #criar o tabuleiro
 criarInterfaceDoBulero(tabuleiro)
 
 print(tabuleiro)
 #botar no final do código
 telinha.mainloop()
+
