@@ -1,0 +1,83 @@
+from codigo import *
+def codigozao(movi,lugar):
+    redigitar = False
+    mensagenzinha = ''
+    global pecaPreta
+    global pecaBranca
+    global damaPreta
+    global damaBranca
+    global contador
+    global vez
+    global opcao
+    global k
+    p = 0
+    global cap
+    global pecaPretaCapturada
+    global pecaBrancaCapturada
+    global at
+    
+    while True:
+
+        #De quem é a vez
+        if vez=='o':
+            print("VEZ DAS PEÇAS BRANCAS (o)")
+        elif vez=='x':
+            print("VEZ DAS PEÇAS PRETAS (x)")
+       
+       
+       
+        if tabuleiro[movi] not in [damaPreta, damaBranca]:
+            while capturaObrigatoria(tabuleiro, vez) and capturaPossivel(movi,lugar)==False:
+                    '''movimento=input("Peça que será movida e para onde ela vai (ex: 3a4b) ")
+                    movi=movimento[0]+movimento[1].lower()
+                    lugar=movimento[2]+movimento[3].lower()'''
+                    redigitar = True
+                    break
+                        
+            
+            
+                    
+        #Verificação das restrições e caso alguma não seja cumprida, será necessário digitar novamente.
+        while True:
+            k=0
+            if tabuleiro[movi]!=vez or tabuleiro[movi] not in [damaBranca, damaPreta] and restricaoLugarImpo(movi,lugar,vez) == False:
+                 k = 1
+            if tabuleiro[movi] not in [damaBranca,damaPreta]:
+                if restricaoMoviPeca(movi,p)==False or restricaoMoviIne(movi) == False or restricaoMoviVez(movi,p,vez) == False or restricaoLugarOcupado(lugar)==False or restricaoLugarPosicao(lugar,movi) == False or restricaoLugarFrente(lugar,movi,cap,vez) == False or k>0:
+                    redigitar = True
+                    break             
+                else:
+                    break
+            else:
+                if restricaoMoviPeca(movi,p)==False or essadamapodevoarn(lugar,movi)== False or dancinhadadama(movi,lugar) == False or restricaoMoviIne(movi) == False or restricaoLugarOcupado(lugar)==False or restricaoMoviDamaCor(movi)==False:
+                    print()
+                else:
+                    break
+       
+
+        #Se a jogada for possível, então será modificada no tabuleiro e ele será exibido.
+        if redigitar == False:
+            mover(movi,lugar)
+        
+        
+       
+        #Verificação de quem é a vez de jogar e se há a possibilidade de captura dupla .
+        if redigitar == False:
+            if cap==0:
+                contador+=1
+                if contador%2==0:
+                   vez=pecaBranca
+                else:
+                    vez=pecaPreta
+            elif cap>0 and capturaObrigatoriaSeguida(vez,lugar,tabuleiro)==True or CapturaObrigatoriaSeguidaGeral(vez,lugar,tabuleiro)==True or capturaObrigatoriaSeguidaDama(lugar,tabuleiro)==True:
+                print("Você ainda pode capturar mais uma peça.")
+                print()
+            else:
+                contador+=1
+                if contador%2==0:
+                   vez=pecaBranca
+                else:
+                    vez=pecaPreta
+        return tabuleiro, redigitar
+
+
